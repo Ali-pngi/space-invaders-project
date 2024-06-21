@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+    height: 600px;
+    width: 600px;
+}
+
+.grid div {
+    border: 1px solid lightgray;
+    display: inline-block;
+}
+
