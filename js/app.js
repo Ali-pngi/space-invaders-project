@@ -7,8 +7,8 @@
   
   
   // Container size 
-  const width = 35
-  const height = 35
+  const width = 20
+  const height = 25
   const totalSquareCount = width * height
   const container = document.querySelector('.container')
   const squareEls = []
@@ -37,8 +37,11 @@
 
 
     // Player initialisation
-    let playerPosition = 0;
+    let playerPosition = 470;
     squareEls[playerPosition].classList.add('player');
+
+    // Active projectiles array 
+    const activeProjectiles = [];
 
     // Handle player movement 
     function handleMove(evt) {
@@ -54,12 +57,13 @@
     // Handle projectile firing
 
     function handleFire(evt) {
-        if (evt.key === ' ') {
+        if (evt.key === ' ' && activeProjectiles.length < 5) {
             let projectilePosition = playerPosition - width;
 
             function moveProjectile() {
                 if (projectilePosition < 0) {
                     clearInterval(projectileInterval);
+                    activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
                     return;
                 }
             squareEls [projectilePosition].classList.remove('projectile');
@@ -70,7 +74,7 @@
             }
             }
             const projectileInterval = setInterval(moveProjectile, 100);
-
+            activeProjectiles.push(projectileInterval);
         }
     }
 
