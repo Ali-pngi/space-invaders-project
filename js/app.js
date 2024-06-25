@@ -13,11 +13,6 @@
   const container = document.querySelector('.container')
   const squareEls = []
   
-  
-
-                  
-                  
-
   // container creation 
   for (let i = 0; i <totalSquareCount; i++){
     const square = document.createElement('div');
@@ -39,6 +34,63 @@
     // Player initialisation
     let playerPosition = 470;
     squareEls[playerPosition].classList.add('player');
+
+
+    //  Invader initialisation & structure 
+
+    const invaderWidth = 10;
+    const invaderHeight = 7;
+    const invaderStartPosition = 5;
+
+    const invaderPattern = [
+        [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 1, 1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 1, 1, 0, 0, 1, 1, 0, 0]  
+    ]
+
+    function createInvader() {
+      for( let row = 0; row < invaderHeight; row ++) {
+        for (let col = 0; col < invaderWidth; col ++) {
+          if (invaderPattern[row][col] === 1) {
+            const position = invaderStartPosition + row * width + col;
+            squareEls[position].classList.add('invader');
+            }
+        }
+      }
+    }
+
+    function clearInvader() {
+        for(let row = 0; row < invaderHeight; row++) {
+            for (let col = 0; col < invaderWidth; col++) {
+                if (invaderPattern [row] [col] === 1) {
+                    const position = invaderStartPosition + row * width + col;
+                    squareEls[position].classList.remove('invader');
+                }
+            }
+        }
+    }
+
+    // Invader movement 
+    let invaderDirection = -1;
+   
+    function moveInvader() {
+        clearInvader();
+        if((invaderDirection === 1 && invaderStartPosition % width + invaderWidth >= width) ||
+    (invaderDirection === -1 && invaderStartPosition % width === 0)) {
+        invaderDirection *= -1;
+        invaderStartPosition += width; // Move down one row 
+    } else {
+        invaderStartPosition += invaderDirection;
+    }
+    }
+
+    createInvader();
+
+    setInterval(moveInvader, 1000);
 
     // Active projectiles array 
     const activeProjectiles = [];
@@ -66,7 +118,7 @@
                     activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
                     return;
                 }
-            squareEls [projectilePosition].classList.remove('projectile');
+             squareEls [projectilePosition].classList.remove('projectile');
             projectilePosition -= width;
 
             if (projectilePosition >= 0) {

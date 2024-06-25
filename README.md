@@ -14,3 +14,10 @@ sunday 23rd june 2024
 Monday 24th June 2024
 
 - began work on player element and implementing grid movement 
+-Player element and grid movement functioning, projectiles also implemented but having issues with css for projectiles.
+
+
+Tuesday 25th June 2024 
+
+- Began work on implementing invader and corressponding grid movement.
+- Continuing to try and fix css for projectiles 
