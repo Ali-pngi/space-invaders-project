@@ -40,7 +40,7 @@
 
     const invaderWidth = 10;
     const invaderHeight = 7;
-    const invaderStartPosition = 5;
+    let invaderStartPosition = 5;
 
     const invaderPattern = [
         [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
@@ -52,26 +52,24 @@
         [0, 0, 1, 1, 0, 0, 1, 1, 0, 0]  
     ]
 
+    let invaderPositions = new Set();
     function createInvader() {
-      for( let row = 0; row < invaderHeight; row ++) {
-        for (let col = 0; col < invaderWidth; col ++) {
+      invaderPositions.clear();
+      for (let row = 0; row < invaderHeight; row++) {
+        for (let col = 0; col < invaderWidth; col++) {
           if (invaderPattern[row][col] === 1) {
             const position = invaderStartPosition + row * width + col;
+            invaderPositions.add(position);
             squareEls[position].classList.add('invader');
-            }
+          }
         }
       }
     }
 
     function clearInvader() {
-        for(let row = 0; row < invaderHeight; row++) {
-            for (let col = 0; col < invaderWidth; col++) {
-                if (invaderPattern [row] [col] === 1) {
-                    const position = invaderStartPosition + row * width + col;
-                    squareEls[position].classList.remove('invader');
-                }
-            }
-        }
+       invaderPositions.forEach(position => {
+        squareEls[position].classList.remove('invader');
+       })
     }
 
     // Invader movement 
@@ -79,18 +77,31 @@
    
     function moveInvader() {
         clearInvader();
-        if((invaderDirection === 1 && invaderStartPosition % width + invaderWidth >= width) ||
+
+        if((invaderDirection === 1 && (invaderStartPosition % width + invaderWidth) >= width) ||
     (invaderDirection === -1 && invaderStartPosition % width === 0)) {
         invaderDirection *= -1;
-        invaderStartPosition += width; // Move down one row 
+        invaderStartPosition += width;
     } else {
         invaderStartPosition += invaderDirection;
     }
+
+    invaderPositions = new Set([...invaderPositions].map(position =>
+        position + invaderDirection + (invaderDirection === -1 ? width : 0)));
+        invaderPositions.forEach(position => {
+            if(position < totalSquareCount) {
+                squareEls[position].classList.add('invader');
+            }
+        })
+
+        if ([...invaderPositions].some(position => position >= totalSquareCount - width)) {
+            endGame('lose');
+        }
     }
 
     createInvader();
 
-    setInterval(moveInvader, 1000);
+    setInterval(moveInvader, 750);
 
     // Active projectiles array 
     const activeProjectiles = [];
@@ -118,12 +129,25 @@
                     activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
                     return;
                 }
-             squareEls [projectilePosition].classList.remove('projectile');
+             squareEls [projectilePosition + width].classList.remove('projectile');
             projectilePosition -= width;
 
-            if (projectilePosition >= 0) {
-                squareEls[projectilePosition].classList.add('projectile');
+            if (invaderPositions.has(projectilePosition)) {
+                invaderPositions.delete(projectilePosition);
+                squareEls[projectilePosition].classList.remove('invader');
+                clearInterval(projectileInterval);
+                activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
+
+                if (invaderPositions.size === 0) {
+                    endGame('win');
+                }
+                return;
             }
+
+           
+                squareEls[projectilePosition].classList.add('projectile');
+                projectilePosition -= width;
+            
             }
             const projectileInterval = setInterval(moveProjectile, 100);
             activeProjectiles.push(projectileInterval);
@@ -132,6 +156,15 @@
 
 
 
+    function endGame(result) {
+        clearInterval(invaderMovementInterval);
+        if(result === 'win') {
+            alert('You win!');
+        } else if (result === 'lose') {
+            alert('You lose!');
+        }
+    }
+    
     document.addEventListener('keydown', handleMove);
     document.addEventListener('keydown', handleFire);
 
