@@ -3,8 +3,33 @@
   let tie;
 
   const highScoreEl = document.getElementById('high-score');
+  const messageEl = document.getElementById('message');
   const resetBtnEl= document.getElementById('reset');
   
+
+ function init () {
+
+    win = false;
+    lose = false; 
+    createInvader();
+    render();
+
+  }
+
+  function render () {
+    updateMessage();
+
+  }
+
+  function updateMessage() {
+    if(win) {
+        messageEl.textContent = `You win! Great work.`
+    } else if(lose) {
+        messageEl.textContent = `You lose! Bad luck, try again?`
+    } else {
+        messageEl.textContent = `Good luck!`
+    }
+  }
   
   // Container size 
   const width = 20
@@ -28,19 +53,21 @@
     container.appendChild(square); 
     }
     
-    console.log(squareEls);
+    // console.log(squareEls);
 
 
     // Player initialisation
     let playerPosition = 470;
+    
     squareEls[playerPosition].classList.add('player');
-
+    
 
     //  Invader initialisation & structure 
 
     const invaderWidth = 10;
     const invaderHeight = 7;
     let invaderStartPosition = 5;
+    let invaderPositions = new Set();
 
     const invaderPattern = [
         [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
@@ -52,56 +79,59 @@
         [0, 0, 1, 1, 0, 0, 1, 1, 0, 0]  
     ]
 
-    let invaderPositions = new Set();
     function createInvader() {
-      invaderPositions.clear();
-      for (let row = 0; row < invaderHeight; row++) {
-        for (let col = 0; col < invaderWidth; col++) {
-          if (invaderPattern[row][col] === 1) {
-            const position = invaderStartPosition + row * width + col;
-            invaderPositions.add(position);
-            squareEls[position].classList.add('invader');
-          }
+       
+        invaderPositions.clear();
+        for( let row = 0; row < invaderHeight; row++) {
+            for(let col = 0; col < invaderWidth; col++) {
+                if (invaderPattern[row][col] === 1) {
+                    const position = invaderStartPosition + col + row * width;
+
+                    if (position < totalSquareCount) {
+                        invaderPositions.add(position);
+                        squareEls[position].classList.add('invader');
+                    }
+                }
+            }
         }
-      }
     }
+
+ 
 
     function clearInvader() {
        invaderPositions.forEach(position => {
-        squareEls[position].classList.remove('invader');
-       })
+        if(position < totalSquareCount) {
+            squareEls[position].classList.remove('invader');
+        }
+       });
     }
 
     // Invader movement 
-    let invaderDirection = -1;
+    let invaderDirection = 1;
    
     function moveInvader() {
         clearInvader();
-
-        if((invaderDirection === 1 && (invaderStartPosition % width + invaderWidth) >= width) ||
-    (invaderDirection === -1 && invaderStartPosition % width === 0)) {
-        invaderDirection *= -1;
-        invaderStartPosition += width;
-    } else {
-        invaderStartPosition += invaderDirection;
-    }
-
-    invaderPositions = new Set([...invaderPositions].map(position =>
-        position + invaderDirection + (invaderDirection === -1 ? width : 0)));
+        // Checks for edge (touchedEdge)
+        let touchedEdge = false;
         invaderPositions.forEach(position => {
-            if(position < totalSquareCount) {
-                squareEls[position].classList.add('invader');
+            ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0)) 
+                touchedEdge = true;
             }
-        })
-
-        if ([...invaderPositions].some(position => position >= totalSquareCount - width)) {
-            endGame('lose');
+         );
+        // Changes direction when edge is touched 
+        if (touchedEdge) {
+         invaderDirection *= -1;
+         invaderStartPosition += width;
+        } else {
+            invaderStartPosition += invaderDirection;
         }
+
+        invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
+    
+        createInvader();
     }
 
-    createInvader();
-
-    setInterval(moveInvader, 750);
+    setInterval(moveInvader, 750) 
 
     // Active projectiles array 
     const activeProjectiles = [];
@@ -164,7 +194,23 @@
             alert('You lose!');
         }
     }
-    
+
+
+    function reset() {
+        clearInterval(invaderMovementInterval);
+        squareEls.forEach(square => {
+            square.classList.remove('projectile', 'invader', 'player');
+            });
+            invaderPositions.clear();
+            invaderStartPosition = 5;
+            playerPosition = 470;
+            createInvader();
+            activeProjectiles.forEach(interval => clearInterval(interval));
+            activeProjectiles.length= 0;
+            init();
+        
+    }
+
     document.addEventListener('keydown', handleMove);
     document.addEventListener('keydown', handleFire);
-
+    resetBtnEl.addEventListener('click', )
