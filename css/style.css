@@ -38,19 +38,18 @@ h2 {
 
 
 .sqr {
-    /* border: 1px solid gray; */
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(100% / 20);
-    height: calc(100% / 25);
     box-sizing: border-box;
+   
     }
 
 
     .player {
+     
       background-image: url("../assets/spaceship/Fighter/Idle.png");
-      /* background-color: #cccccc; */
       background-repeat: no-repeat;
       background-size: 225%;
       background-position: center;
@@ -59,32 +58,37 @@ h2 {
     }
 
     .projectile {
-        display: flex;
-        background: linear-gradient(to top, black, rgba(255, 0, 0, 1));
-        height: 100%;
-        width: 5% !important;
-        margin: auto;
-        border-radius: 10px;
+       
+        background-image: url(../assets/magic_projectile.gif);
+        background-repeat: no-repeat;
+        background-size: cover;
+        transform: rotate(97deg);
     }
-.invader {
-    background-image: url('../assets/invader-texture.jpg');
 
-}
 
-h3 {
-    color: gainsboro;
-    border: 2px solid gray;
-    border-radius: 5px;
+    .invader {
+   
+        background-image: url('../assets/invader-moving2.gif');
+        background-repeat: no-repeat;
+        background-size: contain;
 
-}
+    }
 
-#how-to {
+    h3 {
+      
+        color: gainsboro;
+        border: 2px solid gray;
+        border-radius: 5px;
+
+    }
+
+.how-to {
     color: gainsboro;
     border:  2px solid gray;
     border-radius: 5px;
 }
 
-#reset {
+.reset {
     color: gainsboro;
     border: 2px solid gr;
     margin: 25px;

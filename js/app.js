@@ -1,6 +1,7 @@
   
   let win;
   let tie;
+  let gameInterval;
 
   const highScoreEl = document.getElementById('high-score');
   const messageEl = document.getElementById('message');
@@ -12,6 +13,7 @@
 
     win = false;
     lose = false; 
+    gameInterval = setInterval(moveInvader, 500);
     render();
 
   }
@@ -36,7 +38,7 @@
   
   // Container size 
   const width = 20
-  const height = 25
+  const height = 20
   const totalSquareCount = width * height
   const container = document.querySelector('.container')
   const squareEls = []
@@ -60,7 +62,7 @@
 
 
     // Player initialisation
-    let playerPosition = 470;
+    let playerPosition = 370;
     
     squareEls[playerPosition].classList.add('player');
     
@@ -119,32 +121,38 @@
 
     // Invader movement 
     let invaderDirection = 1;
-   
+
     function moveInvader() {
         clearInvader();
-       
+      
         let touchedEdge = false;
+        //change from [...invaderPosition]
         [...invaderPositions].forEach(position => {
-            console.log(invaderDirection, position, position % width)
-           if ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0)) 
-                touchedEdge = true;
-            }
-         );
-        
-        if (touchedEdge) {
-         invaderDirection *= -1;
-         invaderStartPosition += width;
-         
-        } else {
-            invaderStartPosition += invaderDirection;
-            console.log(invaderStartPosition)
+          console.log(invaderDirection, position, position % width)
+          if ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0))
+            touchedEdge = true;
         }
-        invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
-    
+        );
+      
+        if (touchedEdge) {
+          invaderDirection *= -1;
+          // invaderStartPosition += width;
+          invaderPositions = new Set([...invaderPositions].map(position => position + width));
+      
+        } else {
+          // invaderStartPosition += invaderDirection;
+          // console.log(invaderStartPosition)
+          invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
+        }
+        // invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
+        
         addInvader();
+        if([...invaderPositions].some(position => position >= totalSquareCount - width)) {
+            endGame('lose');
+        }
     }
 
-    setInterval(moveInvader, 750) 
+     
 
     // Active projectiles array 
     const activeProjectiles = [];
@@ -208,6 +216,7 @@
 
     function endGame(result) {
         activeProjectiles.forEach(interval => clearInterval(interval));
+        clearInterval(gameInterval);
         if(result === 'win') {
             messageEl.textContent ='You win!';
         } else if (result === 'lose') {
@@ -217,9 +226,9 @@
 
 
     function reset() {
+        clearInterval(gameInterval);
         activeProjectiles.forEach(interval => clearInterval(interval));
         activeProjectiles.length= 0;
-        
         squareEls.forEach(square => {
             square.classList.remove('projectile', 'invader', 'player');
             });
