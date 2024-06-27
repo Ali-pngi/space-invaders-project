@@ -125,7 +125,7 @@
        
         let touchedEdge = false;
         [...invaderPositions].forEach(position => {
-            // console.log(invaderDirection, position, position % width)
+            console.log(invaderDirection, position, position % width)
            if ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0)) 
                 touchedEdge = true;
             }
@@ -137,7 +137,7 @@
          
         } else {
             invaderStartPosition += invaderDirection;
-            // console.log(invaderStartPosition)
+            console.log(invaderStartPosition)
         }
         invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
     
@@ -165,54 +165,61 @@
     function handleFire(evt) {
         if (evt.key === ' ' && activeProjectiles.length < 5) {
             let projectilePosition = playerPosition - width;
-
+    
             function moveProjectile() {
+               
+                if (projectilePosition + width < totalSquareCount) {
+                    squareEls[projectilePosition + width].classList.remove('projectile');
+                }
+    
+                
                 if (projectilePosition < 0) {
                     clearInterval(projectileInterval);
                     activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
                     return;
                 }
-             squareEls [projectilePosition + width].classList.remove('projectile');
-            projectilePosition -= width;
-
-            if (invaderPositions.has(projectilePosition)) { 
-                console.log(invaderPositions.size)
-                invaderPositions.delete(projectilePosition);
-                squareEls[projectilePosition].classList.remove('invader');
-                console.log(invaderPositions.size)
-                clearInterval(projectileInterval);
-                activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
-
-                if (invaderPositions.size === 0) {
-                    endGame('win');
+    
+                
+                if (invaderPositions.has(projectilePosition)) {
+                    invaderPositions.delete(projectilePosition);
+                    squareEls[projectilePosition].classList.remove('invader');
+                    clearInterval(projectileInterval);
+                    activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
+    
+                    
+                    if (invaderPositions.size === 0) {
+                        endGame('win');
+                    }
+                    return;
                 }
-                return;
-            }
-
-           
+    
+                
                 squareEls[projectilePosition].classList.add('projectile');
                 projectilePosition -= width;
-            
             }
+    
             const projectileInterval = setInterval(moveProjectile, 100);
             activeProjectiles.push(projectileInterval);
         }
     }
+    
 
 
 
     function endGame(result) {
-        clearInterval(setInterval);
+        activeProjectiles.forEach(interval => clearInterval(interval));
         if(result === 'win') {
-            alert('You win!');
+            messageEl.textContent ='You win!';
         } else if (result === 'lose') {
-            alert('You lose!');
+            messageEl.textContent ='You lose! Try again?';
         }
     }
 
 
     function reset() {
-        clearInterval(setInterval);
+        activeProjectiles.forEach(interval => clearInterval(interval));
+        activeProjectiles.length= 0;
+        
         squareEls.forEach(square => {
             square.classList.remove('projectile', 'invader', 'player');
             });
@@ -220,8 +227,6 @@
             invaderStartPosition = 5;
             playerPosition = 470;
             createInvader();
-            activeProjectiles.forEach(interval => clearInterval(interval));
-            activeProjectiles.length= 0;
             init();
         
     }
