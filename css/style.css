@@ -3,12 +3,25 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-image: url('../assets/meteor-space.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 h1 {
     align-items: center;
+    color: gainsboro;
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 5px;
 }
 
+h2 {
+    color: gainsboro;
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+}
 
 .container {
     display: flex;
@@ -16,7 +29,7 @@ h1 {
     justify-content: left;
     width: 100%;
     height: 75vh;
-    border: 2px solid black;
+    border: 2px solid gray;
     border-radius: 10px;
     max-width: 50%;
     max-height: 50%;
@@ -56,4 +69,23 @@ h1 {
 .invader {
     background-image: url('../assets/invader-texture.jpg');
 
+}
+
+h3 {
+    color: gainsboro;
+    border: 2px solid gray;
+    border-radius: 5px;
+
+}
+
+#how-to {
+    color: gainsboro;
+    border:  2px solid gray;
+    border-radius: 5px;
+}
+
+#reset {
+    color: gainsboro;
+    border: 2px solid gr;
+    margin: 25px;
 }

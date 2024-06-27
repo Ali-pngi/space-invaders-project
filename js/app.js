@@ -6,18 +6,21 @@
   const messageEl = document.getElementById('message');
   const resetBtnEl= document.getElementById('reset');
   
-
+  
+  
  function init () {
 
     win = false;
     lose = false; 
-    createInvader();
     render();
 
   }
 
+
+
   function render () {
     updateMessage();
+   createInvader();
 
   }
 
@@ -96,6 +99,14 @@
         }
     }
 
+    function addInvader() {
+        invaderPositions.forEach(position => {
+         if(position < totalSquareCount) {
+             squareEls[position].classList.add('invader');
+         }
+        });
+     }
+    
  
 
     function clearInvader() {
@@ -111,24 +122,26 @@
    
     function moveInvader() {
         clearInvader();
-        // Checks for edge (touchedEdge)
+       
         let touchedEdge = false;
-        invaderPositions.forEach(position => {
-            ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0)) 
+        [...invaderPositions].forEach(position => {
+            // console.log(invaderDirection, position, position % width)
+           if ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0)) 
                 touchedEdge = true;
             }
          );
-        // Changes direction when edge is touched 
+        
         if (touchedEdge) {
          invaderDirection *= -1;
          invaderStartPosition += width;
+         
         } else {
             invaderStartPosition += invaderDirection;
+            // console.log(invaderStartPosition)
         }
-
         invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
     
-        createInvader();
+        addInvader();
     }
 
     setInterval(moveInvader, 750) 
@@ -162,9 +175,11 @@
              squareEls [projectilePosition + width].classList.remove('projectile');
             projectilePosition -= width;
 
-            if (invaderPositions.has(projectilePosition)) {
+            if (invaderPositions.has(projectilePosition)) { 
+                console.log(invaderPositions.size)
                 invaderPositions.delete(projectilePosition);
                 squareEls[projectilePosition].classList.remove('invader');
+                console.log(invaderPositions.size)
                 clearInterval(projectileInterval);
                 activeProjectiles.splice(activeProjectiles.indexOf(projectileInterval), 1);
 
@@ -187,7 +202,7 @@
 
 
     function endGame(result) {
-        clearInterval(invaderMovementInterval);
+        clearInterval(setInterval);
         if(result === 'win') {
             alert('You win!');
         } else if (result === 'lose') {
@@ -197,7 +212,7 @@
 
 
     function reset() {
-        clearInterval(invaderMovementInterval);
+        clearInterval(setInterval);
         squareEls.forEach(square => {
             square.classList.remove('projectile', 'invader', 'player');
             });
@@ -211,6 +226,8 @@
         
     }
 
+    init()
+
     document.addEventListener('keydown', handleMove);
     document.addEventListener('keydown', handleFire);
-    resetBtnEl.addEventListener('click', )
+    resetBtnEl.addEventListener('click', reset)
