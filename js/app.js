@@ -46,7 +46,6 @@
   // container creation 
   for (let i = 0; i <totalSquareCount; i++){
     const square = document.createElement('div');
-    // square.innerText = i;
     square.classList.add('sqr');
     square.id = i;
     
@@ -58,7 +57,6 @@
     container.appendChild(square); 
     }
     
-    // console.log(squareEls);
 
 
     // Player initialisation
@@ -126,7 +124,6 @@
         clearInvader();
       
         let touchedEdge = false;
-        //change from [...invaderPosition]
         [...invaderPositions].forEach(position => {
           console.log(invaderDirection, position, position % width)
           if ((invaderDirection === 1 && (position % width) === (width - 1)) || (invaderDirection === -1 && (position % width) === 0))
@@ -136,15 +133,12 @@
       
         if (touchedEdge) {
           invaderDirection *= -1;
-          // invaderStartPosition += width;
           invaderPositions = new Set([...invaderPositions].map(position => position + width));
       
         } else {
-          // invaderStartPosition += invaderDirection;
-          // console.log(invaderStartPosition)
           invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
         }
-        // invaderPositions = new Set([...invaderPositions].map(position => position + invaderDirection));
+        
         
         addInvader();
         if([...invaderPositions].some(position => position >= totalSquareCount - width)) {

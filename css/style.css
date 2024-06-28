@@ -34,6 +34,7 @@ h2 {
     font-weight: 400;
     font-style: normal;
     background-color: darkslategray;
+    text-decoration: underline;
 }
 
 .outer-container {
@@ -72,7 +73,7 @@ h2 {
 
     .player {
      
-      background-image: url("../assets/spaceship/Fighter/Idle.png");
+      background-image: url("../assets/spaceship/Corvette/Idle.png");
       background-repeat: no-repeat;
       background-size: 225%;
       background-position: center;
@@ -132,13 +133,14 @@ h2 {
     font-family: "Anton", sans-serif;
     font-weight: 200;
     font-style: normal;
-    height: 300px;
+    height: 230px;
     padding: 10px;
 }
 
 .how-to span {
     margin-bottom: 30px;
     text-align: center;
+    display: block;
 }
 
 #reset {
