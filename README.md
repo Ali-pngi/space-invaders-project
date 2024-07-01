@@ -41,17 +41,6 @@ Friday 28th June 2024
  - Refined css styling and added more dynamic visual elements to invader and projectiles in the form of Gifs.
 
 
- https://github.com/Ali-pngi/space-invaders-project.git
-
-
-
-
-
-
-
-
-
-
 
 Deployed game link : 
 https://ali-pngi.github.io/space-invaders-project/
