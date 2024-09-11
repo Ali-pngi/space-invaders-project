@@ -39,15 +39,6 @@ Thursday 27th June 2024
 Friday 28th June 2024 
  - Made final adjustments to game mechanics eg. invader movement and projectile interaction
  - Refined css styling and added more dynamic visual elements to invader and projectiles in the form of Gifs.
- 
-
-
-
-
-
-
-
-
 
 
 
