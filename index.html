@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Space Invaders</title>
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="assets" href="./assets/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <h1>Space Invaders!</h1> 
-        <h2 id="high-score">High scores</h2>
-       <div class = "outer-container">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bungee+Outline&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bungee+Outline&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <h1>Space Invaders!</h1>
+    <div id="game-info">
+        <p id="current-score">Score: 0</p>
+        <p id="high-score">High Score: 1560</p>
+        <p id="current-level">Level: 1</p>
+    </div>
+    <div class="game-wrapper">
         <div class="container"></div>
-        
-        <div id = "side-panel">
-        <button id ="reset">Reset</button>
-        <h3 id ="message">message</h3>
-        <p class ="how-to">
-            <span>Welcome to space invaders! The aim of the game is to destroy the invader before it reaches the bottom of the screen.</span>
-            <span>Player controls: Move your ship left or right using the 'left' and 'right' directional keys and fire projectiles using 'spacebar'</span>
-            <span> And that's it! Good luck and Happy hunting! </span>
-        </p>
+        <div id="side-panel">
+            <h3 id="message">Good luck!</h3>
+            <div class="how-to">
+                <h4>How to Play:</h4>
+                <p><span class="key">←</span> <span class="key">→</span> Move ship</p>
+                <p><span class="key">Space</span> Fire</p>
+                <p>Destroy all invaders!</p>
+                <p>Don't let them reach the bottom!</p>
+            </div>
+            <button id="reset">Reset</button>
         </div>
     </div>
-        <script src="./js/app.js"></script>
+    <script src="./js/app.js"></script>
 </body>
+
 </html>
